@@ -63,4 +63,25 @@ public class SwitchBetweenWindows {
             }
         }
     }
+
+public static boolean isScreenOpen(WebDriver driver, String titleContains) {
+        // Get all the window handles
+        Set<String> windowHandles = driver.getWindowHandles();
+
+        // Iterate through each window handle
+        for (String handle : windowHandles) {
+            // Switch to the window
+            driver.switchTo().window(handle);
+
+            // Check if the title contains the specified text
+            if (driver.getTitle().contains(titleContains)) {
+                System.out.println("A window with title containing '" + titleContains + "' is already open.");
+                return true;  // Return true if the window is found
+            }
+        }
+
+        // If no window with the specified title is found, return false
+        System.out.println("No window with title containing '" + titleContains + "' is open.");
+        return false;
+    }
 }
