@@ -1,0 +1,66 @@
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.Set;
+
+public class SwitchBetweenWindows {
+
+    public static void main(String[] args) {
+        // Set the path to the WebDriver executable
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");  // Replace with your WebDriver path
+
+        // Initialize WebDriver (This can be changed to any browser-specific driver, e.g., FirefoxDriver, EdgeDriver, etc.)
+        WebDriver driver = new ChromeDriver();  // Replace with your WebDriver initialization
+
+        // Open the first URL in the first window
+        driver.get("https://www.example.com");  // Replace with your first URL
+
+        // Get the window handle of the first window
+        String firstWindowHandle = driver.getWindowHandle();
+
+        // Open a new window and switch to it using JavascriptExecutor
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.open('about:blank','_blank');");
+
+        // Get the window handles of all open windows
+        Set<String> windowHandles = driver.getWindowHandles();
+
+        // Switch to the new window (second window)
+        for (String handle : windowHandles) {
+            if (!handle.equals(firstWindowHandle)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
+
+        // Open the second URL in the second window
+        driver.get("https://www.anotherexample.com");  // Replace with your second URL
+
+        // Function to switch between windows based on title
+        switchToWindowByTitle(driver, "Example Domain");  // Replace with part of the title of the first URL
+
+        // Perform any actions in the first window
+        System.out.println("Switched to window: " + driver.getTitle());
+
+        // Switch back to the second window by title
+        switchToWindowByTitle(driver, "Another Example Domain");  // Replace with part of the title of the second URL
+
+        // Perform any actions in the second window
+        System.out.println("Switched to window: " + driver.getTitle());
+
+        // Close all windows
+        driver.quit();
+    }
+
+    // Method to switch between windows based on part of the title
+    public static void switchToWindowByTitle(WebDriver driver, String titleContains) {
+        Set<String> windowHandles = driver.getWindowHandles();
+
+        for (String handle : windowHandles) {
+            driver.switchTo().window(handle);
+            if (driver.getTitle().contains(titleContains)) {
+                break;
+            }
+        }
+    }
+}
