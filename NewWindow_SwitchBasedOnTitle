@@ -85,3 +85,37 @@ public static boolean isScreenOpen(WebDriver driver, String titleContains) {
         return false;
     }
 }
+===========================================
+    public static String switchToNewlyOpenedWindow(WebDriver driver) {
+        // Store the current window handle
+        String originalWindow = driver.getWindowHandle();
+
+        // Get all the window handles before clicking the URL
+        Set<String> existingWindows = driver.getWindowHandles();
+
+        // Perform the action that opens the new tab/window (e.g., clicking a link)
+        // This part should be done before calling this method, so the new window is opened
+
+        // Wait for the new window to be opened (you might need an explicit wait here)
+
+        // Get all the window handles after the new window is opened
+        Set<String> allWindows = driver.getWindowHandles();
+
+        // Loop through the handles and switch to the new window
+        for (String window : allWindows) {
+            if (!existingWindows.contains(window)) {
+                // Switch to the new window
+                driver.switchTo().window(window);
+                
+                // Print the title of the new window for verification (optional)
+                String newWindowTitle = driver.getTitle();
+                System.out.println("Switched to new window/tab with title: " + newWindowTitle);
+                
+                return newWindowTitle;  // Return the title of the new window/tab
+            }
+        }
+
+        // If no new window is found (which shouldn't happen if the new tab is opened), return null
+        System.out.println("No new window or tab was found.");
+        return null;
+    }
