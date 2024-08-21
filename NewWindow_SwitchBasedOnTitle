@@ -119,3 +119,14 @@ public static boolean isScreenOpen(WebDriver driver, String titleContains) {
         System.out.println("No new window or tab was found.");
         return null;
     }
+=====================
+public boolean isElementDisplayed(WebElement element) {
+    try {
+        // Attempt to check if the element is displayed
+        return element.isDisplayed();
+    } catch (StaleElementReferenceException e) {
+        // If the element is stale (no longer in the DOM), return false
+        System.out.println("Element is stale: " + e.getMessage());
+        return false;
+    }
+}
